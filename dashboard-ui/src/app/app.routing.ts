@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './auth-guard';
 
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
@@ -64,7 +65,8 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
+        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule),
+        canActivate:[AuthGuard]
       },
       {
         path: 'icons',
@@ -88,7 +90,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes, { useHash:true,relativeLinkResolution: 'legacy' }) ],
+  imports: [ RouterModule.forRoot(routes, { useHash:true,initialNavigation: "disabled",relativeLinkResolution: 'legacy' }) ],
   exports: [ RouterModule ]
 })
 export class AppRoutingModule {}

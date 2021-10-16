@@ -22,6 +22,7 @@ import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
+import { DividerModule } from 'primeng/divider';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -42,6 +43,12 @@ import { AppRoutingModule } from './app.routing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
+import { AuthGuard } from './auth-guard';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { environment } from '../environments/environment';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
+import { TokenInterceptor } from './token-interceptor';
 
 @NgModule({
   imports: [
@@ -59,6 +66,20 @@ import { ChartsModule } from 'ng2-charts';
     ChartsModule,
     IconModule,
     IconSetModule.forRoot(),
+    OAuthModule.forRoot({
+      resourceServer: {
+          allowedUrls: environment.security.resourceServerAllowedUrls,
+          sendAccessToken: true
+      }
+  }),
+  HttpClientModule,
+  ToastrModule.forRoot({
+    timeOut: 3000,
+    positionClass: 'toast-top-right',
+    preventDuplicates: true,
+    autoDismiss: true
+  }),
+  DividerModule
   ],
   declarations: [
     AppComponent,
@@ -73,7 +94,13 @@ import { ChartsModule } from 'ng2-charts';
       provide: LocationStrategy,
       useClass: HashLocationStrategy
     },
+    {
+      provide: HTTP_INTERCEPTORS, 
+      useClass: TokenInterceptor, 
+      multi: true
+    },
     IconSetService,
+    AuthGuard
   ],
   bootstrap: [ AppComponent ]
 })

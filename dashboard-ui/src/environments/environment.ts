@@ -4,5 +4,17 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  serviceURL:"http://localhost:8080/broker-client",
+  security:{
+    issuer:'http://localhost:8080/auth/realms/microservice',
+    redirectUri:'',
+    clientId:'angular-ui',
+    responseType:'code',
+    scope:'openid profile email offline_access',
+    silentRefreshRedirectUri:'/assets/silent-refresh.html',
+    showDebugInformation:true,
+    resourceServerAllowedUrls:['http://localhost:8080/broker-client']
+  }
 };
+
