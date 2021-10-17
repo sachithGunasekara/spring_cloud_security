@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  serviceURL:"http://localhost:8080/broker-client",
+  serviceURL:"http://localhost:8081/order-service",
   security:{
     issuer:'http://localhost:8080/auth/realms/microservice',
     redirectUri:'',
@@ -14,7 +14,7 @@ export const environment = {
     scope:'openid profile email offline_access',
     silentRefreshRedirectUri:'/assets/silent-refresh.html',
     showDebugInformation:true,
-    resourceServerAllowedUrls:['http://localhost:8080/broker-client']
+    resourceServerAllowedUrls:['http://localhost:8081/order-service']
   }
 };
 

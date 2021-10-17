@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   templateUrl: 'dashboard.component.html'
@@ -384,5 +386,14 @@ export class DashboardComponent implements OnInit {
       this.mainChartData2.push(this.random(80, 100));
       this.mainChartData3.push(65);
     }
+  }
+
+  constructor(private httpClient:HttpClient){
+
+  }
+
+  addOrder(){
+    let url = environment.serviceURL+"/order/place";
+    this.httpClient.get(url).subscribe((res)=>console.log(res),(err)=>console.error(err),()=>console.log('completed'));
   }
 }
