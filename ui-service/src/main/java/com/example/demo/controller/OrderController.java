@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -25,6 +26,7 @@ public class OrderController {
 	@Autowired
 	private WebClient webClient;
 
+	@PreAuthorize("hasAnyRole('admin','user') && hasAuthority('SCOPE_order-service-admin')")
 	@RequestMapping(method = RequestMethod.GET, path = "/place", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreateOrderResponseDTO> placeOrder(@AuthenticationPrincipal JwtAuthenticationToken token) {
 		JwtAuthenticationToken authentication = (JwtAuthenticationToken)SecurityContextHolder.getContext().getAuthentication();
